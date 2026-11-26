@@ -1,4 +1,4 @@
-package main.java.com.athot.ecommerce_fruits.config;
+package com.athot.ecommerce_fruits.config;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;

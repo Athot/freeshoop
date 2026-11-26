@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +22,8 @@ import com.athot.ecommerce_fruits.model.Category;
 import com.athot.ecommerce_fruits.model.Product;
 import com.athot.ecommerce_fruits.repository.CategoryRepo;
 import com.athot.ecommerce_fruits.repository.ProductRepo;
-
-import main.java.com.athot.ecommerce_fruits.config.CloudinaryConfig;
+import com.cloudinary.Cloudinary;
+ 
 
 @Service
 public class ProductService {
@@ -35,59 +35,94 @@ public class ProductService {
     private CategoryRepo categoryRepo;
 
     @Autowired
-    private CloudinaryConfig cloudinary;
+    private Cloudinary  cloudinary;
     // CREATE PRODUCT WITH MULTIPLE IMAGES
-    public Product createProducts(Product product, List<MultipartFile> images) throws Exception {
+    // public Product createProducts(Product product, List<MultipartFile> images) throws Exception {
 
-        List<String> imageUrls = new ArrayList<>();
+    //     List<String> imageUrls = new ArrayList<>();
 
-        if (images != null) {
-            for (MultipartFile image : images) {
+    //     if (images != null) {
+    //         for (MultipartFile image : images) {
 
-                if (image == null || image.isEmpty()) {
-                    continue;
-                }
+    //             if (image == null || image.isEmpty()) {
+    //                 continue;
+    //             }
 
-                            // Upload image to Cloudinary
-                Map uploadResult = cloudinary.uploader().upload(
-                                image.getBytes(),
-                                ObjectUtils.asMap(
-                                    "folder", "freeshoop/products",
-                                    "resource_type", "image"
-                                )
-                            );
-                // get secure image url
-                String imageUrl = uploadResult.get("secure_url").toString();
-                imageUrls.add(imageUrl);
+    //                         // Upload image to Cloudinary
+    //             Map uploadResult = cloudinary.uploader().upload(
+    //                             image.getBytes(),
+    //                             ObjectUtils.asMap(
+    //                                 "folder", "freeshoop/products",
+    //                                 "resource_type", "image"
+    //                             )
+    //                         );
+    //             // get secure image url
+    //             String imageUrl = uploadResult.get("secure_url").toString();
+    //             imageUrls.add(imageUrl);
 
-            //     String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
+    //         //     String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
 
-            //     Path uploadPath = Paths.get("uploads/products")
-            //             .toAbsolutePath()
-            //             .normalize();
+    //         //     Path uploadPath = Paths.get("uploads/products")
+    //         //             .toAbsolutePath()
+    //         //             .normalize();
 
-            //     Files.createDirectories(uploadPath);
+    //         //     Files.createDirectories(uploadPath);
 
-            //     Path filePath = uploadPath.resolve(fileName).normalize();
+    //         //     Path filePath = uploadPath.resolve(fileName).normalize();
 
-            //     if (!filePath.startsWith(uploadPath)) {
-            //         throw new IllegalArgumentException("Invalid file path");
-            //     }
+    //         //     if (!filePath.startsWith(uploadPath)) {
+    //         //         throw new IllegalArgumentException("Invalid file path");
+    //         //     }
 
-            //     Files.copy(
-            //             image.getInputStream(),
-            //             filePath,
-            //             StandardCopyOption.REPLACE_EXISTING
-            //     );
+    //         //     Files.copy(
+    //         //             image.getInputStream(),
+    //         //             filePath,
+    //         //             StandardCopyOption.REPLACE_EXISTING
+    //         //     );
 
-            //     imageUrls.add("/uploads/products/" + fileName);
+    //         //     imageUrls.add("/uploads/products/" + fileName);
+    //         }
+    //     }
+
+    //     product.setImages(imageUrls);
+
+    //     return repo.save(product);
+    // }
+
+
+
+public Product createProducts(Product product, List<MultipartFile> images)
+        throws Exception {
+
+    List<String> imageUrls = new ArrayList<>();
+
+    if (images != null) {
+        for (MultipartFile image : images) {
+
+            if (image == null || image.isEmpty()) {
+                continue;
             }
+
+            Map uploadResult = cloudinary.uploader().upload(
+                image.getBytes(),
+                ObjectUtils.asMap(
+                    "folder", "freeshoop/products",
+                    "resource_type", "image"
+                )
+            );
+
+            String imageUrl = uploadResult.get("secure_url").toString();
+
+            imageUrls.add(imageUrl);
         }
-
-        product.setImages(imageUrls);
-
-        return repo.save(product);
     }
+
+    product.setImages(imageUrls);
+
+    return repo.save(product);
+}
+
+
 
     // GET ALL PRODUCTS
     @Transactional(readOnly = true)
