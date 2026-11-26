@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router";
 
 const ProductCard = ({ product, onAddToCart }) => {
+  console.log("Product images:", product.images);
   const navigate = useNavigate();
   return (
     <article className="group overflow-hidden rounded-2xl border border-gray-100 bg-white transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-green-900/5">

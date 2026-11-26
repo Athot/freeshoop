@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "sonner";
 export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-export const IMAGE_BASE_URL = "http://localhost:8080";
+// export const IMAGE_BASE_URL = "http://localhost:8080";
 
 // Axios response interceptor
 axios.interceptors.response.use(
