@@ -15,7 +15,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
                         .allowedOrigins("https://freeshoop-cous.vercel.app",    
-                        "https://freeshoop-cous.vercel.app"
+                        "http://localhost:5173"
 )
                         .allowedMethods(
                                 "GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"

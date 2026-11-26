@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import com.athot.ecommerce_fruits.model.Product;
 import com.athot.ecommerce_fruits.repository.CategoryRepo;
 import com.athot.ecommerce_fruits.repository.ProductRepo;
 
+import main.java.com.athot.ecommerce_fruits.config.CloudinaryConfig;
+
 @Service
 public class ProductService {
 
@@ -30,6 +33,9 @@ public class ProductService {
 
     @Autowired 
     private CategoryRepo categoryRepo;
+
+    @Autowired
+    private CloudinaryConfig cloudinary;
     // CREATE PRODUCT WITH MULTIPLE IMAGES
     public Product createProducts(Product product, List<MultipartFile> images) throws Exception {
 
@@ -42,27 +48,39 @@ public class ProductService {
                     continue;
                 }
 
-                String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
+                            // Upload image to Cloudinary
+                Map uploadResult = cloudinary.uploader().upload(
+                                image.getBytes(),
+                                ObjectUtils.asMap(
+                                    "folder", "freeshoop/products",
+                                    "resource_type", "image"
+                                )
+                            );
+                // get secure image url
+                String imageUrl = uploadResult.get("secure_url").toString();
+                imageUrls.add(imageUrl);
 
-                Path uploadPath = Paths.get("uploads/products")
-                        .toAbsolutePath()
-                        .normalize();
+            //     String fileName = UUID.randomUUID() + "_" + image.getOriginalFilename();
 
-                Files.createDirectories(uploadPath);
+            //     Path uploadPath = Paths.get("uploads/products")
+            //             .toAbsolutePath()
+            //             .normalize();
 
-                Path filePath = uploadPath.resolve(fileName).normalize();
+            //     Files.createDirectories(uploadPath);
 
-                if (!filePath.startsWith(uploadPath)) {
-                    throw new IllegalArgumentException("Invalid file path");
-                }
+            //     Path filePath = uploadPath.resolve(fileName).normalize();
 
-                Files.copy(
-                        image.getInputStream(),
-                        filePath,
-                        StandardCopyOption.REPLACE_EXISTING
-                );
+            //     if (!filePath.startsWith(uploadPath)) {
+            //         throw new IllegalArgumentException("Invalid file path");
+            //     }
 
-                imageUrls.add("/uploads/products/" + fileName);
+            //     Files.copy(
+            //             image.getInputStream(),
+            //             filePath,
+            //             StandardCopyOption.REPLACE_EXISTING
+            //     );
+
+            //     imageUrls.add("/uploads/products/" + fileName);
             }
         }
 

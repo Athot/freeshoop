@@ -13,13 +13,15 @@ export default function AdminDashboardHome() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activePage, setActivePage] = useState("Dashboard");
   const renderPage = () => {
-    debugger;
     switch (activePage) {
       case "Dashboard":
         return <Dashboard />;
 
       case "Products":
         return <ProductScreen />;
+
+      case "Add Product":
+        return <UploadProduct />;
 
       case "Categories":
         return <UploadCategories />;

@@ -10,6 +10,7 @@ import {
   X,
 } from "lucide-react";
 import { getAllOrders, updateOrderStatus } from "../api/api";
+import { toast } from "sonner";
 
 const statusStyles = {
   PENDING: "bg-amber-50 text-amber-700",
@@ -72,7 +73,7 @@ export default function AdminOrders() {
     const res = await updateOrderStatus(token, orderId, status);
     if (res) {
       // status update successfully
-      alert("Status updated successfully");
+      toast.success("Status updated successfully");
       fetchOrders();
       setOrders((current) =>
         current.map((order) =>
@@ -84,10 +85,9 @@ export default function AdminOrders() {
         current?.id === orderId ? { ...current, status } : current,
       );
     } else {
-      alert("Status not updated");
+      toast.error("Status not updated");
     }
   };
-  console.log(orders);
   return (
     <div className="space-y-7">
       {/* Heading */}

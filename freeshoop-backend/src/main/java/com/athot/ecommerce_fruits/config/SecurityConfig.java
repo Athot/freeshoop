@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .requestMatchers("/uploads/**").permitAll()
 
                 // Allow visitors to view products
-                .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                // .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
 
                 // All other endpoints require authentication
                 .anyRequest().authenticated()

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getUserCart, IMAGE_BASE_URL, placeOrder } from "../api/api";
+import { getUserCart, placeOrder } from "../api/api";
+import { toast } from "sonner";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Checkout = () => {
       }
     } catch (error) {
       console.error("Error fetching cart:", error);
-      alert("Unable to fetch your cart.");
+      toast.error("Unable to fetch your cart.");
     }
   };
 
@@ -68,13 +69,13 @@ const Checkout = () => {
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
     if (cart.length === 0) {
-      alert("Your cart is empty.");
+      toast.error("Your cart is empty.");
       navigate("/products");
       return;
     }
 
     if (!token || !userID) {
-      alert("Please login to place your order.");
+      toast.error("Please login to place your order.");
       navigate("/login");
       return;
     }
@@ -85,7 +86,7 @@ const Checkout = () => {
       // Send delivery information to backend
       const response = await placeOrder(token, userID, formData);
       if (response) {
-        alert("Order placed successfully!");
+        toast.success("Order placed successfully!");
         navigate("/order-success", {
           state: {
             order: response,
@@ -97,7 +98,7 @@ const Checkout = () => {
     } catch (error) {
       console.error("Order placement failed:", error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           error.response?.data ||
           "Failed to place your order. Please try again.",
@@ -317,7 +318,7 @@ const Checkout = () => {
                     <div key={item.id} className="flex gap-3">
                       <div className="relative shrink-0">
                         <img
-                          src={`${IMAGE_BASE_URL}${item?.product.images[0]}`}
+                          src={`${item?.product.images[0]}`}
                           alt={product.label}
                           className="h-16 w-16 rounded-xl bg-gray-50 object-cover"
                         />

@@ -30,7 +30,6 @@ export default function Dashboard() {
       setAllData(res);
     }
   };
-  console.log(allData);
   return (
     <div className="space-y-7">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">

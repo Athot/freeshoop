@@ -11,12 +11,8 @@ import {
   Package,
 } from "lucide-react";
 import { useNavigate } from "react-router";
-import {
-  editProduct,
-  getAllCategory,
-  getAllProduct,
-  IMAGE_BASE_URL,
-} from "../api/api";
+import { editProduct, getAllCategory, getAllProduct } from "../api/api";
+import { toast } from "sonner";
 
 const emptyForm = {
   description: "",
@@ -157,7 +153,7 @@ export default function ProductScreen() {
         const res = await editProduct(token, editingId, formData);
 
         if (res) {
-          alert("Product updated successfully!");
+          toast.success("Product updated successfully!");
 
           await fetchAllProduct();
           await fetchAllCategory();
@@ -530,7 +526,7 @@ export default function ProductScreen() {
                       {form.images.map((image, index) => (
                         <div key={image} className="relative">
                           <img
-                            src={`${IMAGE_BASE_URL}${image}`}
+                            src={image}
                             alt={`Product ${index + 1}`}
                             className="h-28 w-full rounded-xl border object-cover"
                           />

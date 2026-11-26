@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { Pencil, Trash2 } from "lucide-react";
-import {
-  addedToCart,
-  addReview,
-  getAllReview,
-  IMAGE_BASE_URL,
-} from "../api/api";
+import { addedToCart, addReview, getAllReview } from "../api/api";
+import { toast } from "sonner";
 
 const ProductDetails = () => {
   const location = useLocation();
@@ -51,12 +47,12 @@ const ProductDetails = () => {
     e.preventDefault();
 
     if (selectedRating === 0) {
-      alert("Please select a star rating.");
+      toast.error("Please select a star rating.");
       return;
     }
 
     if (!reviewComment.trim()) {
-      alert("Please write your review.");
+      toast.error("Please write your review.");
       return;
     }
 
@@ -67,9 +63,8 @@ const ProductDetails = () => {
     };
     const res = await addReview(token, newReview);
     if (res) {
-      alert("Your review has been submitted successfully!");
+      toast.success("Your review has been submitted successfully!");
       setReviews((prev) => [newReview, ...prev]);
-
       setSelectedRating(0);
       setHoverRating(0);
       setReviewComment("");
@@ -114,7 +109,7 @@ const ProductDetails = () => {
 
       if (res) {
         setAdded(true);
-        alert("Item added successful");
+        toast.success("Item added successful");
       }
     } catch (error) {
       console.error("Error adding product to cart:", error);
@@ -177,7 +172,7 @@ const ProductDetails = () => {
                     }`}
                   >
                     <img
-                      src={`${IMAGE_BASE_URL}${image}`}
+                      src={` ${image}`}
                       alt={`${product.label} view ${index + 1}`}
                       className="h-full w-full object-contain p-1"
                       loading="lazy"
@@ -190,7 +185,7 @@ const ProductDetails = () => {
               <div className="flex min-h-75 items-center justify-center overflow-hidden rounded-2xl bg-[#f8faf4] sm:min-h-[460px]">
                 <img
                   key={productImages[selectedImage]}
-                  src={`${IMAGE_BASE_URL}${productImages[selectedImage]}`}
+                  src={` ${productImages[selectedImage]}`}
                   alt={product.label}
                   className="h-full max-h-115 w-full object-contain p-4 transition duration-300 sm:p-8"
                 />

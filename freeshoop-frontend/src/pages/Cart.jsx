@@ -5,9 +5,9 @@ import {
   deleteCart,
   getAllProduct,
   getUserCart,
-  IMAGE_BASE_URL,
   updateCartQuantity,
 } from "../api/api";
+import { toast } from "sonner";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -68,7 +68,7 @@ const Cart = () => {
 
       await fetchUserCart();
 
-      alert("Product removed successfully!");
+      toast.success("Product removed successfully!");
     } catch (error) {
       console.error("Error deleting cart:", error.response?.data || error);
     }
@@ -79,13 +79,13 @@ const Cart = () => {
     const data = products.filter((e) => e.id === productID);
     const totalQuantity = data[0].quantity;
     if (newQuantity >= totalQuantity) {
-      alert(
+      toast.error(
         `Opps! sorry the total quantity for ${data[0].brand} is ${totalQuantity}`,
       );
       return;
     }
     if (newQuantity < 1) {
-      alert("Quantity cannot be less than 1.");
+      toast.error("Quantity cannot be less than 1.");
       return;
     }
 
@@ -155,7 +155,7 @@ const Cart = () => {
                   className="flex flex-col gap-4 rounded-2xl border border-gray-100 bg-white p-4 sm:flex-row sm:items-center"
                 >
                   <img
-                    src={`${IMAGE_BASE_URL}${item?.product.images[0]}`}
+                    src={`${item?.product.images[0]}`}
                     alt={item.brand}
                     className="h-28 w-full rounded-xl object-cover sm:w-32"
                   />

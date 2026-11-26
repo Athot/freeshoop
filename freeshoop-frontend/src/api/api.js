@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "sonner";
 export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const IMAGE_BASE_URL = "http://localhost:8080";
 
@@ -10,7 +11,7 @@ axios.interceptors.response.use(
       const token = localStorage.getItem("token");
 
       if (token) {
-        alert("Your session has expired. Please log in again.");
+        toast.error("Your session has expired. Please log in again.");
         logout();
       }
     }
@@ -20,10 +21,12 @@ axios.interceptors.response.use(
 );
 
 export const login = async (data) => {
+  debugger;
   try {
     const res = await axios.post(`${BASE_URL}/auth/signIn`, data);
     return res.data;
   } catch (error) {
+    console.error(error);
     throw error;
   }
 };

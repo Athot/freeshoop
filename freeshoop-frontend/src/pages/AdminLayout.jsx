@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
+import Sidebar from "../components/AdminSidebar";
 
 export default function AdminLayout() {
   const [open, setOpen] = useState(false);

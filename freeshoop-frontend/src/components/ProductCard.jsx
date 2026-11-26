@@ -1,12 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router";
-import { IMAGE_BASE_URL } from "../api/api";
 
 const ProductCard = ({ product, onAddToCart }) => {
-  const imageUrl = product.images?.[0]
-    ? `${IMAGE_BASE_URL}${product.images[0]}`
-    : "/placeholder.png";
-  console.log(product);
   const navigate = useNavigate();
   return (
     <article className="group overflow-hidden rounded-2xl border border-gray-100 bg-white transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-green-900/5">
@@ -21,11 +16,10 @@ const ProductCard = ({ product, onAddToCart }) => {
         tabIndex={0}
         aria-label={`View details for ${product.name}`}
       >
+        {/* ${IMAGE_BASE_URL}${product.images[0]} */}
         <img
           src={
-            product.images?.length > 0
-              ? `${IMAGE_BASE_URL}${product.images[0]}`
-              : "/placeholder.png"
+            product.images?.length > 0 ? product.images[0] : "/placeholder.png"
           }
           alt={product.brand}
           loading="lazy"

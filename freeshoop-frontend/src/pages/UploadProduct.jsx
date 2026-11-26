@@ -124,6 +124,12 @@ export default function UploadProduct() {
         setOpen={setOpen}
         activePage={activePage}
         setActivePage={setActivePage}
+        onNavigate={(label) => {
+          navigate("/dashboard", {
+            state: { activePage: label },
+          });
+          setOpen(false);
+        }}
       />
 
       {/* Main content: leave room for the fixed sidebar */}

@@ -21,7 +21,13 @@ const menuItems = [
   // { label: "Analytics", icon: BarChart3 },
 ];
 
-export default function Sidebar({ open, setOpen, activePage, setActivePage }) {
+export default function Sidebar({
+  open,
+  setOpen,
+  activePage,
+  setActivePage,
+  onNavigate,
+}) {
   const navigate = useNavigate();
   return (
     <>
@@ -68,8 +74,12 @@ export default function Sidebar({ open, setOpen, activePage, setActivePage }) {
               <button
                 key={label}
                 onClick={() => {
-                  setActivePage(label);
-                  setOpen(false);
+                  if (onNavigate) {
+                    onNavigate(label);
+                  } else {
+                    setActivePage(label);
+                    setOpen(false);
+                  }
                 }}
                 className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition ${
                   activePage === label

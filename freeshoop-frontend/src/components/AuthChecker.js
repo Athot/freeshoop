@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { isTokenExpired, logout } from "../utils/auth";
+import { toast } from "sonner";
 
 const AuthChecker = () => {
   debugger;
@@ -8,7 +9,7 @@ const AuthChecker = () => {
       const token = localStorage.getItem("token");
 
       if (token && isTokenExpired(token)) {
-        alert("Your session has expired. Please log in again.");
+        toast.error("Your session has expired. Please log in again.");
         logout();
       }
     };

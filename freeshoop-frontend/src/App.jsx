@@ -12,11 +12,13 @@ import UploadCategories from "./pages/UploadCategories";
 import UploadProduct from "./pages/UploadProduct";
 import ProductScreen from "./pages/ProductScreen";
 import AuthChecker from "./components/AuthChecker";
-
+import { Toaster } from "sonner";
 export default function App() {
   return (
     <CartProvider>
       <BrowserRouter>
+        <Toaster position="top-right" richColors />
+
         {/* to check whether the token is expired or not */}
         <AuthChecker />
         <Routes>

@@ -11,6 +11,7 @@ import {
   Package,
 } from "lucide-react";
 import { getAllCategory, updateCategory, uploadCategory } from "../api/api";
+import { toast } from "sonner";
 
 const emptyForm = {
   name: "",
@@ -67,10 +68,10 @@ export default function UploadCategories() {
     const res = await updateCategory(editingId, token, newCategory);
     if (res) {
       fetchAllCategory();
-      alert("Updated successfully");
+      toast.success("Updated successfully");
       return;
     } else {
-      alert("Update not successful");
+      toast.error("Update not successful");
       return;
     }
   };
@@ -117,7 +118,7 @@ export default function UploadCategories() {
       if (res) {
         setCategories((current) => [newCategory, ...current]);
         fetchAllCategory();
-        alert("Upload successful");
+        toast.success("Upload successful");
       } else {
         setError("Failed to upload category.");
         return;

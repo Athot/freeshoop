@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/api";
+import { toast } from "sonner";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -19,13 +20,11 @@ const Login = () => {
   }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
     setErrorMessage("");
 
     try {
       const response = await login({ email, password });
-      console.log(response);
       // Remember or forget the email based on the checkbox
       if (rememberMe) {
         localStorage.setItem("rememberedEmail", email);
@@ -36,8 +35,10 @@ const Login = () => {
       }
 
       if (response.role === "ADMIN") {
+        toast.success("Login Successfully");
         navigate("/dashboard");
       } else if (response.role === "USER") {
+        toast.success("Login Successfully");
         navigate("/product");
       }
 
