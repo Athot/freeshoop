@@ -5,6 +5,7 @@ import Topbar from "../components/AdminTopbar";
 import { FaArrowLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router";
 import { getAllCategory, uploadProduct } from "../api/api";
+import { toast } from "sonner";
 const emptyForm = {
   description: "",
   brand: "",
@@ -99,7 +100,7 @@ export default function UploadProduct() {
       const res = await uploadProduct(formData, token);
 
       if (res) {
-        alert("Product uploaded successfully!");
+        toast.success("Product uploaded successfully!");
         setForm({ ...emptyForm });
       }
     } catch (err) {
